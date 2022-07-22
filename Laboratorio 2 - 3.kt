@@ -1,3 +1,11 @@
+// Universidad del valle de Guatemala
+// Programación de plataformas móviles
+// Sección: 20
+// Carlos Edgardo López Barrera
+// 21666
+// Creado: 15/07/2022
+// Modificado: 22/07/2022
+
 data class ItemData(
     var originalPos: Int,
     var originalValue: Any,
@@ -11,47 +19,21 @@ fun main() {
 }
 
 fun processList(inputList: List<Any?>?): List<ItemData>? {
-    var lista: ArrayList<ItemData>? = ArrayList<ItemData>()
-    var position = 0
-    var nulos = 0
-    
-    if(inputList == null){
-        return null;
-    }
-    
-    for(item in inputList.orEmpty()){
-       if(item == null){
-           nulos ++
-       }
-    }
-    
-    if(nulos != inputList.size){
-        for (item in inputList.orEmpty()){
-        
-       		if (item != null) {
-           		var objeto: ItemData = ItemData(0, "", "", "")
-           		objeto.originalPos = position
-       
-           		when (item) {
-                	is String -> objeto.type = "cadena"
-                	is Int -> objeto.type = "entero"
-                	is Boolean -> objeto.type = "booleano"
-                	else -> objeto.type = null
-            	}
-        
-            	objeto.originalValue = item
-
-           		when (item) {
-                	is String -> objeto.info = "L" + item.length
-                	is Int -> {  if(item%10 == 0) objeto.info = "M10" else if(item%5 == 0) objeto.info = "M5" else if(item%2 == 0) objeto.info = "M2" else objeto.info = null}
-                	is Boolean -> { if(item == true) objeto.info = "Verdadero" else objeto.info = "Falso"}
-                	else -> objeto.info = null
-            	}
-            	lista?.add(objeto)
-       		}
-        	position ++
-      	}    
-    }
-    
-    return lista
+	var lista: ArrayList<ItemData>? = ArrayList<ItemData>()
+	if(inputList!=null){
+		inputList.forEachIndexed {index, ele ->
+			if(ele!=null){
+				var itemData:ItemData = when(ele){
+					is String -> ItemData(index, ele, "cadena", "L${ele.length}")
+					is Int -> ItemData(index, ele, "entero", if(ele%10==0) "M10" else if(ele%5==0) "M5" else if(ele%2==0) "M2" else null)
+					is Boolean -> ItemData(index, ele, "booleano", if(ele) "Verdadero" else "Falso")
+					else -> ItemData(index, ele, null, null)
+				}
+				lista?.add(itemData)
+			}
+		}
+		return lista
+	}else{
+		return null
+	}
 }
